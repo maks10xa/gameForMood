@@ -9,6 +9,11 @@ namespace gameForMood.Controllers
     {
         private readonly IMainService _mainService = mainService;
 
+        /// <summary>
+        /// Контакты
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <returns></returns>
         [HttpGet("")]
         public async Task<IActionResult> GetContacts(CancellationToken ct) => Ok(await _mainService.GetContact(ct));
     }

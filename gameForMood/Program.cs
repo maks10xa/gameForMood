@@ -11,6 +11,7 @@ using gameForMood.Services.Interceptors;
 using gameForMood.Services.Interfaces;
 using gameForMood.Services;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +69,8 @@ builder.Services.AddSwaggerGen(options =>
             new string[]{}
         }
     });
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.AddCors();
@@ -94,15 +97,28 @@ builder.Services.AddScoped<IMainService, MainService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+IServiceScopeFactory? scopeFactory = app.Services.GetService<IServiceScopeFactory>();
+
+using (var scope = scopeFactory?.CreateScope())
+{
+    using (var context = scope?.ServiceProvider.GetService<GameForMoodContext>())
+    {
+        context?.Database.Migrate();
+    };
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(m => m.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
+app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
