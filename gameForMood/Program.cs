@@ -11,7 +11,6 @@ using gameForMood.Services.Interceptors;
 using gameForMood.Services.Interfaces;
 using gameForMood.Services;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
