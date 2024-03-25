@@ -26,6 +26,12 @@ namespace gameForMood.Controllers.MinIO
             return Ok(result);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> PostFile(IFormFile file, string guid)

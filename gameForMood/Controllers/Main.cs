@@ -10,9 +10,6 @@ namespace gameForMood.Controllers
         private readonly IMainService _mainService = mainService;
 
         [HttpGet("")]
-        public IActionResult Index()
-        {
-            return Ok();
-        }
+        public async Task<IActionResult> GetContacts(CancellationToken ct) => Ok(await _mainService.GetContact(ct));
     }
 }
